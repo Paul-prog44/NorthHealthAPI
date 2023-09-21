@@ -24,7 +24,7 @@ class MedicalFile
     #[ORM\OneToOne(mappedBy: 'medicalFile', cascade: ['persist', 'remove'])]
     private ?Patient $patient = null;
 
-    #[ORM\OneToMany(mappedBy: 'medicalFile', targetEntity: reservation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'medicalFile', targetEntity: Reservation::class, orphanRemoval: true)]
     private Collection $reservations;
 
     public function __construct()
