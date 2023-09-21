@@ -30,6 +30,7 @@ class Center
     private ?string $country = null;
 
     #[ORM\ManyToMany(targetEntity: Specialty::class, mappedBy: 'center')]
+    #[Groups(["getCenters"])]
     private Collection $specialties;
 
     #[ORM\OneToMany(mappedBy: 'center', targetEntity: Doctor::class)]
