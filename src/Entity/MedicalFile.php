@@ -91,7 +91,7 @@ class MedicalFile
         return $this->reservations;
     }
 
-    public function addReservation(reservation $reservation): static
+    public function addReservation(Reservation $reservation): static
     {
         if (!$this->reservations->contains($reservation)) {
             $this->reservations->add($reservation);
@@ -101,7 +101,7 @@ class MedicalFile
         return $this;
     }
 
-    public function removeReservation(reservation $reservation): static
+    public function removeReservation(Reservation $reservation): static
     {
         if ($this->reservations->removeElement($reservation)) {
             // set the owning side to null (unless already changed)

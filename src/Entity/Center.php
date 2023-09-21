@@ -27,7 +27,7 @@ class Center
     #[ORM\ManyToMany(targetEntity: Specialty::class, mappedBy: 'center')]
     private Collection $specialties;
 
-    #[ORM\OneToMany(mappedBy: 'center', targetEntity: doctor::class)]
+    #[ORM\OneToMany(mappedBy: 'center', targetEntity: Doctor::class)]
     private Collection $doctor;
 
     #[ORM\OneToMany(mappedBy: 'center', targetEntity: Reservation::class, orphanRemoval: true)]
@@ -116,7 +116,7 @@ class Center
         return $this->doctor;
     }
 
-    public function addDoctor(doctor $doctor): static
+    public function addDoctor(Doctor $doctor): static
     {
         if (!$this->doctor->contains($doctor)) {
             $this->doctor->add($doctor);
@@ -126,7 +126,7 @@ class Center
         return $this;
     }
 
-    public function removeDoctor(doctor $doctor): static
+    public function removeDoctor(Doctor $doctor): static
     {
         if ($this->doctor->removeElement($doctor)) {
             // set the owning side to null (unless already changed)

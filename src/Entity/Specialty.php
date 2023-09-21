@@ -18,10 +18,10 @@ class Specialty
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: doctor::class, inversedBy: 'specialties')]
+    #[ORM\ManyToMany(targetEntity: Doctor::class, inversedBy: 'specialties')]
     private Collection $doctor;
 
-    #[ORM\ManyToMany(targetEntity: center::class, inversedBy: 'specialties')]
+    #[ORM\ManyToMany(targetEntity: Center::class, inversedBy: 'specialties')]
     private Collection $center;
 
     public function __construct()
@@ -55,7 +55,7 @@ class Specialty
         return $this->doctor;
     }
 
-    public function addDoctor(doctor $doctor): static
+    public function addDoctor(Doctor $doctor): static
     {
         if (!$this->doctor->contains($doctor)) {
             $this->doctor->add($doctor);
@@ -64,7 +64,7 @@ class Specialty
         return $this;
     }
 
-    public function removeDoctor(doctor $doctor): static
+    public function removeDoctor(Doctor $doctor): static
     {
         $this->doctor->removeElement($doctor);
 
@@ -79,7 +79,7 @@ class Specialty
         return $this->center;
     }
 
-    public function addCenter(center $center): static
+    public function addCenter(Center $center): static
     {
         if (!$this->center->contains($center)) {
             $this->center->add($center);
@@ -88,7 +88,7 @@ class Specialty
         return $this;
     }
 
-    public function removeCenter(center $center): static
+    public function removeCenter(Center $center): static
     {
         $this->center->removeElement($center);
 

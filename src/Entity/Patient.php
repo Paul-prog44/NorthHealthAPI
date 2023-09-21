@@ -35,7 +35,7 @@ class Patient
     private ?string $socialSecurity = null;
 
     #[ORM\OneToOne(inversedBy: 'patient', cascade: ['persist', 'remove'])]
-    private ?medicalFile $medicalFile = null;
+    private ?MedicalFile $medicalFile = null;
 
     public function getId(): ?int
     {
@@ -126,12 +126,12 @@ class Patient
         return $this;
     }
 
-    public function getMedicalFile(): ?medicalFile
+    public function getMedicalFile(): ?MedicalFile
     {
         return $this->medicalFile;
     }
 
-    public function setMedicalFile(?medicalFile $medicalFile): static
+    public function setMedicalFile(?MedicalFile $medicalFile): static
     {
         $this->medicalFile = $medicalFile;
 

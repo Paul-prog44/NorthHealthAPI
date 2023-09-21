@@ -22,15 +22,15 @@ class Reservation
     private ?MedicalFile $medicalFile = null;
 
     #[ORM\OneToOne(inversedBy: 'reservation', cascade: ['persist', 'remove'])]
-    private ?hospitalisation $hospitalisation = null;
+    private ?Hospitalisation $hospitalisation = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?doctor $doctor = null;
+    private ?Doctor $doctor = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?center $center = null;
+    private ?Center $center = null;
 
 
     public function getId(): ?int
@@ -62,36 +62,36 @@ class Reservation
         return $this;
     }
 
-    public function getHospitalisation(): ?hospitalisation
+    public function getHospitalisation(): ?Hospitalisation
     {
         return $this->hospitalisation;
     }
 
-    public function setHospitalisation(?hospitalisation $hospitalisation): static
+    public function setHospitalisation(?Hospitalisation $hospitalisation): static
     {
         $this->hospitalisation = $hospitalisation;
 
         return $this;
     }
 
-    public function getDoctor(): ?doctor
+    public function getDoctor(): ?Doctor
     {
         return $this->doctor;
     }
 
-    public function setDoctor(?doctor $doctor): static
+    public function setDoctor(?Doctor $doctor): static
     {
         $this->doctor = $doctor;
 
         return $this;
     }
 
-    public function getCenter(): ?center
+    public function getCenter(): ?Center
     {
         return $this->center;
     }
 
-    public function setCenter(?center $center): static
+    public function setCenter(?Center $center): static
     {
         $this->center = $center;
 
