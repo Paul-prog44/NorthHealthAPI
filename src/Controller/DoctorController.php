@@ -20,7 +20,7 @@ class DoctorController extends AbstractController
     public function getAllDoctors(DoctorRepository $doctorRepository, SerializerInterface $serializer) :  JsonResponse
     {
         $doctorList = $doctorRepository->findAll();
-        $jsonDoctorList = $serializer->serialize($doctorList, 'json');
+        $jsonDoctorList = $serializer->serialize($doctorList, 'json', ['groups' => 'getDoctors']);
 
         return new JsonResponse($jsonDoctorList, Response::HTTP_OK, [], true);
     }
@@ -32,7 +32,7 @@ class DoctorController extends AbstractController
 
         $doctor = $doctorRepository->find($id);
         if ($doctor) {
-            $jsonDoctor = $serializer->serialize($doctor, 'json');
+            $jsonDoctor = $serializer->serialize($doctor, 'json', ['groups' => 'getDoctors']);
             return new JsonResponse($jsonDoctor, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);

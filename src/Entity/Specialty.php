@@ -17,10 +17,11 @@ class Specialty
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["getCenters"])]
+    #[Groups(["getCenters", "getDoctors", "getSpecialties"])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Doctor::class, inversedBy: 'specialties')]
+    #[Groups(["getSpecialties"])]
     private Collection $doctor;
 
     #[ORM\ManyToMany(targetEntity: Center::class, inversedBy: 'specialties')]

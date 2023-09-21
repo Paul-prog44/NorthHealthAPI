@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\HospitalisationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: HospitalisationRepository::class)]
 class Hospitalisation
@@ -11,18 +12,23 @@ class Hospitalisation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getHospitalisations"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getHospitalisations"])]
     private ?string $type = null;
 
     #[ORM\Column]
+    #[Groups(["getHospitalisations"])]
     private ?bool $vegetarian = null;
 
     #[ORM\Column]
+    #[Groups(["getHospitalisations"])]
     private ?bool $singleRoom = null;
 
     #[ORM\Column]
+    #[Groups(["getHospitalisations"])]
     private ?bool $television = null;
 
     #[ORM\OneToOne(mappedBy: 'hospitalisation', cascade: ['persist', 'remove'])]

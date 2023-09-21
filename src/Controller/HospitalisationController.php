@@ -21,7 +21,7 @@ class HospitalisationController extends AbstractController
     SerializerInterface $serializer) :  JsonResponse
     {
         $hospitalisationList = $hospitalisationRepository->findAll();
-        $jsonHospitalisationList = $serializer->serialize($hospitalisationList, 'json');
+        $jsonHospitalisationList = $serializer->serialize($hospitalisationList, 'json', ['groups' => 'getHospitalisations']);
 
         return new JsonResponse($jsonHospitalisationList, Response::HTTP_OK, [], true);
     }
@@ -33,7 +33,7 @@ class HospitalisationController extends AbstractController
 
         $hospitalisation = $hospitalisationRepository->find($id);
         if ($hospitalisation) {
-            $jsonHospitalisation = $serializer->serialize($hospitalisation, 'json');
+            $jsonHospitalisation = $serializer->serialize($hospitalisation, 'json', ['groups' => 'getHospitalisations']);
             return new JsonResponse($jsonHospitalisation, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);

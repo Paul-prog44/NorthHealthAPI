@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReservationRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -15,6 +16,7 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["getMedicalFiles", "getPatients", "getReservations"])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
@@ -22,14 +24,17 @@ class Reservation
     private ?MedicalFile $medicalFile = null;
 
     #[ORM\OneToOne(inversedBy: 'reservation', cascade: ['persist', 'remove'])]
+    #[Groups(["getReservations"])]
     private ?Hospitalisation $hospitalisation = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getMedicalFiles", "getPatients", "getReservations"])]
     private ?Doctor $doctor = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getMedicalFiles", "getPatients", "getReservations"])]
     private ?Center $center = null;
 
 

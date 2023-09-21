@@ -20,7 +20,7 @@ class PatientController extends AbstractController
     public function getAllPatients(PatientRepository $patientRepository, SerializerInterface $serializer) :  JsonResponse
     {
         $patientList = $patientRepository->findAll();
-        $jsonPatientList = $serializer->serialize($patientList, 'json');
+        $jsonPatientList = $serializer->serialize($patientList, 'json', ['groups' => 'getPatients']);
 
         return new JsonResponse($jsonPatientList, Response::HTTP_OK, [], true);
     }
@@ -32,7 +32,7 @@ class PatientController extends AbstractController
 
         $patient = $patientRepository->find($id);
         if ($patient) {
-            $jsonPatient = $serializer->serialize($patient, 'json');
+            $jsonPatient = $serializer->serialize($patient, 'json', ['groups' => 'getPatients']);
             return new JsonResponse($jsonPatient, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);

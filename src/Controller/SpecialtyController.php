@@ -20,7 +20,7 @@ class SpecialtyController extends AbstractController
     public function getAllSpecialtys(SpecialtyRepository $specialtyRepository, SerializerInterface $serializer) :  JsonResponse
     {
         $specialtyList = $specialtyRepository->findAll();
-        $jsonSpecialtyList = $serializer->serialize($specialtyList, 'json');
+        $jsonSpecialtyList = $serializer->serialize($specialtyList, 'json', ['groups' => 'getSpecialties']);
 
         return new JsonResponse($jsonSpecialtyList, Response::HTTP_OK, [], true);
     }
@@ -32,7 +32,7 @@ class SpecialtyController extends AbstractController
 
         $specialty = $specialtyRepository->find($id);
         if ($specialty) {
-            $jsonSpecialty = $serializer->serialize($specialty, 'json');
+            $jsonSpecialty = $serializer->serialize($specialty, 'json', ['groups' => 'getSpecialties']);
             return new JsonResponse($jsonSpecialty, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);

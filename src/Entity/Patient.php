@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\PatientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PatientRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 class Patient
@@ -11,30 +12,39 @@ class Patient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getPatients"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
+    #[Groups(["getPatients"])]
     private ?string $gender = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getPatients"])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getPatients"])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getPatients"])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getPatients"])]
     private ?string $emailAddress = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getPatients"])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getPatients"])]
     private ?string $socialSecurity = null;
 
     #[ORM\OneToOne(inversedBy: 'patient', cascade: ['persist', 'remove'])]
+    #[Groups(["getPatients"])]
     private ?MedicalFile $medicalFile = null;
 
     public function getId(): ?int

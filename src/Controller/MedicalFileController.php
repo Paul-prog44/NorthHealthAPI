@@ -21,7 +21,7 @@ class MedicalFileController extends AbstractController
     SerializerInterface $serializer) :  JsonResponse
     {
         $medicalFileList = $medicalFileRepository->findAll();
-        $jsonMedicalFileList = $serializer->serialize($medicalFileList, 'json');
+        $jsonMedicalFileList = $serializer->serialize($medicalFileList, 'json', ['groups' => 'getMedicalFiles']);
 
         return new JsonResponse($jsonMedicalFileList, Response::HTTP_OK, [], true);
     }
@@ -33,7 +33,7 @@ class MedicalFileController extends AbstractController
 
         $medicalFile = $medicalFileRepository->find($id);
         if ($medicalFile) {
-            $jsonMedicalFile = $serializer->serialize($medicalFile, 'json');
+            $jsonMedicalFile = $serializer->serialize($medicalFile, 'json', ['groups' => 'getMedicalFiles']);
             return new JsonResponse($jsonMedicalFile, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);

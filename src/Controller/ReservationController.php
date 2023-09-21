@@ -20,7 +20,7 @@ class ReservationController extends AbstractController
     public function getAllReservations(ReservationRepository $reservationRepository, SerializerInterface $serializer) :  JsonResponse
     {
         $reservationList = $reservationRepository->findAll();
-        $jsonReservationList = $serializer->serialize($reservationList, 'json');
+        $jsonReservationList = $serializer->serialize($reservationList, 'json', ['groups' => 'getReservation']);
 
         return new JsonResponse($jsonReservationList, Response::HTTP_OK, [], true);
     }
@@ -32,7 +32,7 @@ class ReservationController extends AbstractController
 
         $reservation = $reservationRepository->find($id);
         if ($reservation) {
-            $jsonReservation = $serializer->serialize($reservation, 'json');
+            $jsonReservation = $serializer->serialize($reservation, 'json', ['groups' => 'getReservation']);
             return new JsonResponse($jsonReservation, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);

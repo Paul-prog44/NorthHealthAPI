@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\MedicalFileRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MedicalFileRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MedicalFileRepository::class)]
 class MedicalFile
@@ -13,9 +14,11 @@ class MedicalFile
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getMedicalFiles"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["getMedicalFiles", "getPatients"])]
     private ?string $allergies = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -25,6 +28,7 @@ class MedicalFile
     private ?Patient $patient = null;
 
     #[ORM\OneToMany(mappedBy: 'medicalFile', targetEntity: Reservation::class, orphanRemoval: true)]
+    #[Groups(["getMedicalFiles"])]
     private Collection $reservations;
 
     public function __construct()

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\DoctorRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DoctorRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DoctorRepository::class)]
 class Doctor
@@ -13,21 +14,27 @@ class Doctor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getDoctors"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getDoctors"])]
     private ?string $gender = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getDoctors", "getSpecialties"])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getDoctors", "getSpecialties"])]
     private ?string $lastName = null;
 
     #[ORM\ManyToMany(targetEntity: Specialty::class, mappedBy: 'doctor')]
+    #[Groups(["getDoctors"])]
     private Collection $specialties;
 
     #[ORM\ManyToOne(inversedBy: 'doctor')]
+    #[Groups(["getDoctors"])]
     private ?Center $center = null;
 
     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Reservation::class, orphanRemoval: true)]
