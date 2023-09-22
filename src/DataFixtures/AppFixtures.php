@@ -61,75 +61,18 @@ class AppFixtures extends Fixture
         //Valeurs élatoires pour hydrater les objets
         $genders = ["M", "Mme", "Mlle"];
         $boolean = [true, false];
-        $allergies = ["acariens ", "animaux domestiques", "pollens", "moisissures", 
+        $allergies = ["aucune", "acariens ", "animaux domestiques", "pollens", "moisissures",
         "poissons", "lactose", "arachide", "gluten"];
-        $MedicalSpecialties = ["allergologie ", "pathologique ", "gériatrie", "biologie",
+        $medicalSpecialties = ["aucune", "allergologie ", "pathologique ", "gériatrie", "biologie",
         "cardiologie", "chirurgie", "dentaire", "dermatologie", "podologie", "ophtalmologie"];
 
         
 
-        for ($i=0; $i<20; $i++)
-        {
-            //Création des patients
-            $patient = new Patient();
-            $patient->setGender($genders[array_rand($genders)]);
-            $patient->setLastName("Nom de famille".$i);
-            $patient->setFirstName("Prénom". $i);
-            $patient->setAddress("Adresse".$i);
-            $patient->setEmailAddress("randommail".$i."@anonymous.com");
-            $patient->setPassword('password'.$i);
-            $patient->setSocialSecurity('0123456789'.$i);
-            $manager->persist($patient);
-
-        }
 
         $medicaleFilesArray = [];
         $doctorsArray = [];
         $centersArray = [];
-
-        for ($i=0; $i<10; $i++)
-        {
-            //Création des centres
-            $center = new Center();
-            $center->setName("NomDuCentre".$i);
-            $center->setCity("Ville".$i);
-            $center->setCountry("Pays".$i);
-            $manager->persist($center);
-
-            $centersArray[] = $center;
-
-            //Création des docteurs
-            $doctor = new Doctor();
-            $doctor->setGender($genders[array_rand($genders)]);
-            $doctor->setFirstName("Prénom".$i);
-            $doctor->setLastname("NomdeFamille".$i);
-            $manager->persist($doctor);
-
-            $doctorsArray[]= $doctor;
-
-            //Création des fichiers médicaux
-            $medicalFile = new MedicalFile();
-            $medicalFile->setAllergies($allergies[array_rand($allergies)]);
-            $medicalFile->setDocuments("Document ".$i);
-            $manager->persist($medicalFile);
-
-            $medicaleFilesArray[]= $medicalFile;
-
-            //Création des réservations
-            $reservation = new Reservation();
-            $randomDate = $this->generateRandomDate();
-            $reservation->setDate($randomDate);
-            $reservation->setMedicalFile($medicaleFilesArray[array_rand($medicaleFilesArray)]);
-            $reservation->setDoctor($doctorsArray[array_rand($doctorsArray)]);
-            $reservation->setCenter($centersArray[array_rand($centersArray)]);
-            $manager->persist($reservation);
-
-            //Création des spécialités
-            $specialty = new Specialty();
-            $specialty->setName($MedicalSpecialties[array_rand($MedicalSpecialties)]);
-            $manager->persist($specialty);
-
-        }
+        $hospitalisationsArray = [];
 
         for ($i=0; $i<5; $i++)
         {
@@ -141,8 +84,81 @@ class AppFixtures extends Fixture
             $hospitalisation->setTelevision($boolean[array_rand($boolean)]);
             $manager->persist($hospitalisation);
 
+            $hospitalisationsArray[] = $hospitalisation;
+
         }
 
+        for ($i=0; $i<20; $i++)
+        {
+            //Création des fichiers médicaux
+            $medicalFile = new MedicalFile();
+            $medicalFile->setAllergies($allergies[array_rand($allergies)]);
+            $medicalFile->setDocuments("Document ".$i);
+            $manager->persist($medicalFile);
+
+            $medicaleFilesArray[]= $medicalFile;
+
+            //Création des patients
+            $patient = new Patient();
+            $patient->setGender($genders[array_rand($genders)]);
+            $patient->setLastName("Nom de famille".$i);
+            $patient->setFirstName("Prénom". $i);
+            $patient->setAddress("Adresse".$i);
+            $patient->setEmailAddress("randommail".$i."@anonymous.com");
+            $patient->setPassword('password'.$i);
+            $patient->setSocialSecurity('0123456789'.$i);
+            $patient->setMedicalFile($medicalFile);
+            $manager->persist($patient);
+
+        }
+
+        for ($i=0; $i<10; $i++)
+        {
+
+            //Création des spécialités
+            $specialty = new Specialty();
+            $specialty->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
+            $manager->persist($specialty);
+
+            //Création des centres
+            $center = new Center();
+            $center->setName("NomDuCentre".$i);
+            $center->setCity("Ville".$i);
+            $center->setCountry("Pays".$i);
+            $center->addSpecialty($specialty);
+            $manager->persist($center);
+
+            $centersArray[] = $center;
+
+            //Création des docteurs
+            $doctor = new Doctor();
+            $doctor->setGender($genders[array_rand($genders)]);
+            $doctor->setFirstName("Prénom".$i);
+            $doctor->setLastname("NomdeFamille".$i);
+            $doctor->setCenter($centersArray[array_rand($centersArray)]);
+            $doctor->addSpecialty($specialty);
+            $manager->persist($doctor);
+
+            $doctorsArray[]= $doctor;
+
+
+            //Création des réservations
+            $reservation = new Reservation();
+            $randomDate = $this->generateRandomDate();
+            $reservation->setDate($randomDate);
+            $reservation->setMedicalFile($medicaleFilesArray[array_rand($medicaleFilesArray)]);
+            $reservation->setDoctor($doctorsArray[array_rand($doctorsArray)]);
+            $reservation->setCenter($centersArray[array_rand($centersArray)]);
+            // $reservation->setHospitalisation($hospitalisationsArray[array_rand($hospitalisationsArray)]);
+            $manager->persist($reservation);
+
+
+        }
+
+        
+
         $manager->flush();
+
+
     }
 }
