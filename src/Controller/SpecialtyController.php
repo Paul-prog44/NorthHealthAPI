@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SpecialtyController extends AbstractController
 {
-    #[Route('/api/specialtys', name: 'specialty', methods: ['GET'])]
+    #[Route('/api/specialties', name: 'specialty', methods: ['GET'])]
     public function getAllSpecialtys(SpecialtyRepository $specialtyRepository, SerializerInterface $serializer) :  JsonResponse
     {
         $specialtyList = $specialtyRepository->findAll();
@@ -26,7 +26,7 @@ class SpecialtyController extends AbstractController
     }
 
     //Rechercher une spécialité
-    #[Route('/api/specialtys/{id}', name: 'detailSpecialty', methods: ['GET'])]
+    #[Route('/api/specialties/{id}', name: 'detailSpecialty', methods: ['GET'])]
     public function getDetailSpecialty(int $id, SerializerInterface $serializer,
     SpecialtyRepository $specialtyRepository): JsonResponse {
 
@@ -39,7 +39,7 @@ class SpecialtyController extends AbstractController
    }
 
    //Effacer une spécialité
-   #[Route('/api/specialtys/{id}', name: 'deleteSpecialty', methods: ['DELETE'])]
+   #[Route('/api/specialties/{id}', name: 'deleteSpecialty', methods: ['DELETE'])]
     public function deleteSpecialty(Specialty $specialty, EntityManagerInterface $em): JsonResponse 
     {
         $em->remove($specialty);
@@ -49,7 +49,7 @@ class SpecialtyController extends AbstractController
     }
 
     //Créer une spécialité
-    #[Route('/api/specialtys', name: 'createSpecialty', methods: ['POST'])]
+    #[Route('/api/specialties', name: 'createSpecialty', methods: ['POST'])]
     public function createSpecialty(Request $request, SerializerInterface $serializer,
     EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
@@ -66,7 +66,7 @@ class SpecialtyController extends AbstractController
     }
 
     //Mise à jour 
-    #[Route('/api/specialtys/{id}', name:"updateSpecialty", methods:['PUT'])]
+    #[Route('/api/specialties/{id}', name:"updateSpecialty", methods:['PUT'])]
 
     public function updateSpecialty(Request $request, SerializerInterface $serializer, 
     Specialty $currentSpecialty, EntityManagerInterface $em): JsonResponse 

@@ -14,7 +14,6 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-use function Symfony\Component\Clock\now;
 
 class AppFixtures extends Fixture
 {
