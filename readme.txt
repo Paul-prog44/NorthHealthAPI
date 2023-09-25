@@ -11,6 +11,7 @@ Pour tester l'API :
 
 Créez un dossier à l'emplacement de votre choix, ouvrez un terminal en admin et rendez vous dans ce dossier.
 Exécutez la commande : git clone https://github.com/Paul-prog44/NorthHealthAPI.git
+Se rendre à la racine du projet et tapez : composer install
 Renseignez le fichier .env en mettant le login et mdp de votre base de donnée.
 Créez la Bdd en exécutant la commande php bin/console doctrine:database:create 
 Demandez a Doctrine de créer les tables et les relations grâce à : php bin/console doctrine:schema:update --force
