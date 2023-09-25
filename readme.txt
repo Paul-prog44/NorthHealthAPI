@@ -24,4 +24,6 @@ Pour tester l'API :
     "username": "admin@healthnorthapi.com",
     "password": "password"
 }
-dans le corps de la requête, vous obtiendrez un token d'une durée de vie de 10h que vous devrez passer en paramètre de vos requêtes vers l'API.
+dans le corps de la requête, vous obtiendrez un token d'une durée de vie de 10h que vous devrez passer dans vos requêtes vers l'API.
+
+La documentation de l'API sera directement accessible dans votre navigateur à cette adresse : https://127.0.0.1:8000/api/doc
