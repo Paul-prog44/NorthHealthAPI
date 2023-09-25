@@ -9,16 +9,17 @@ Ressources documentaires principales : Studi.com, OpenClassroom, Stack Overflow
 
 Pour tester l'API : 
 
-Créez un dossier à l'emplacement de votre choix, ouvrez un terminal en admin et rendez vous dans ce dossier.
-Exécutez la commande : git clone https://github.com/Paul-prog44/NorthHealthAPI.git
-Se rendre à la racine du projet et tapez : composer install
-Renseignez le fichier .env en mettant le login et mdp de votre base de donnée.
-Créez la Bdd en exécutant la commande php bin/console doctrine:database:create 
-Demandez a Doctrine de créer les tables et les relations grâce à : php bin/console doctrine:schema:update --force
-Remplissez la BDD avec des valeurs de test en exécutant la commande : php bin/console doctrine:fixtures:load     
+- Créez un dossier à l'emplacement de votre choix, ouvrez un terminal en admin et rendez vous dans ce dossier.
+- Exécutez la commande : git clone https://github.com/Paul-prog44/NorthHealthAPI.git
+- Se rendre à la racine du projet et tapez : composer install
+- Renseignez le fichier .env en mettant le login et mdp de votre base de donnée.
+- Créez la Bdd en exécutant la commande php bin/console doctrine:database:create 
+- Demandez a Doctrine de créer les tables et les relations grâce à : php bin/console doctrine:schema:update --force
+- Remplissez la BDD avec des valeurs de test en exécutant la commande : php bin/console doctrine:fixtures:load
+- Generez les clés publiques et privées à l'aide de : php bin/console lexik:jwt:generate-keypair (Open SSL requis)
 
-Vous pouvez ensuite lancer le serveur symfony à la commande symfony server:start depuis le dossier health_north_api
-Rendez-vous dans postman pour vous connecter, faites une requête POST à cette adresse : https://127.0.0.1:8000/api/login_check en mettant :
+- Vous pouvez ensuite lancer le serveur symfony à la commande symfony server:start depuis le dossier health_north_api
+- Rendez-vous dans postman pour vous connecter, faites une requête POST à cette adresse : https://127.0.0.1:8000/api/login_check en mettant :
 {
     "username": "admin@healthnorthapi.com",
     "password": "password"
