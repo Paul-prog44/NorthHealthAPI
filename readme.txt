@@ -4,6 +4,8 @@ Health North est une entreprise médicale qui requiert une application Web et un
 
 Le service informatique externe permettra aux patients de prendre et de consulter leurs réservations et services connexes, d'ajouter des alarmes de prise de médicament dans leur application mobile, de se créer un compte et de consulter leur dossier médical.
 
+!!! Le fichier Ressources présent dans le repository contient les diagrammes, screenshot et le rapport de mission !!!
+
 Techno utilisées : Draw.io, DbDiagram.io, PHP, Html, CSS, Doctrine ORM, Framework Symfony, XAMPP, Vscode, Git, Github, Bootstrap, Postman, Figma, MySQL, Nelmio bundle, JWT authentication, Fixture Bundle
 Ressources documentaires principales : Studi.com, OpenClassroom, Stack Overflow
 
