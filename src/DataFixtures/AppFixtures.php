@@ -62,8 +62,8 @@ class AppFixtures extends Fixture
         $boolean = [true, false];
         $allergies = ["aucune", "acariens ", "animaux domestiques", "pollens", "moisissures",
         "poissons", "lactose", "arachide", "gluten"];
-        $medicalSpecialties = ["aucune", "allergologie ", "pathologique ", "gériatrie", "biologie",
-        "cardiologie", "chirurgie", "dentaire", "dermatologie", "podologie", "ophtalmologie"];
+        $medicalSpecialties = [ "allergologie ", "pathologique ", "gériatrie", "biologie",
+        "cardiologie", "chirurgie", "dentaire", "dermatologie", "podologie", "ophtalmologie", "gynécologie"];
 
         
 
@@ -119,26 +119,48 @@ class AppFixtures extends Fixture
             $specialty->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
             $manager->persist($specialty);
 
+            $specialty2 = new Specialty();
+            $specialty2->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
+            $manager->persist($specialty2);
+
+            $specialty3 = new Specialty();
+            $specialty3->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
+            $manager->persist($specialty3);
+
+            $specialty4 = new Specialty();
+            $specialty4->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
+            $manager->persist($specialty4);
+
             //Création des centres
             $center = new Center();
-            $center->setName("NomDuCentre".$i);
-            $center->setCity("Ville".$i);
-            $center->setCountry("Pays".$i);
+            $center->setName("Nom du centre ".$i);
+            $center->setCity("Ville ".$i);
+            $center->setCountry("Pays ".$i);
             $center->addSpecialty($specialty);
+            $center->addSpecialty($specialty2);
+            $center->addSpecialty($specialty3);
+            $center->addSpecialty($specialty4);
+            $center->setAddress("Adresse du centre n° ".$i);
             $manager->persist($center);
 
             $centersArray[] = $center;
 
             //Création des docteurs
-            $doctor = new Doctor();
-            $doctor->setGender($genders[array_rand($genders)]);
-            $doctor->setFirstName("Prénom".$i);
-            $doctor->setLastname("NomdeFamille".$i);
-            $doctor->setCenter($centersArray[array_rand($centersArray)]);
-            $doctor->addSpecialty($specialty);
-            $manager->persist($doctor);
 
-            $doctorsArray[]= $doctor;
+            $doctorsArray = [];
+
+            for ($j = 0; $j<5 ; $j++ ) {
+                $doctor[$j] = new Doctor();
+                $doctor[$j]->setGender($genders[array_rand($genders)]);
+                $doctor[$j]->setFirstName("PrénomDocteur ".$i.$j);
+                $doctor[$j]->setLastname("NomDocteur ".$i.$j);
+                $doctor[$j]->setCenter($centersArray[array_rand($centersArray)]);
+                $doctor[$j]->addSpecialty($specialty);
+                $manager->persist($doctor[$j]);
+
+                $doctorsArray[]= $doctor[$j];
+            }
+
 
 
             //Création des réservations

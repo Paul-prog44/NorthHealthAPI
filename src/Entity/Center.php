@@ -34,10 +34,15 @@ class Center
     private Collection $specialties;
 
     #[ORM\OneToMany(mappedBy: 'center', targetEntity: Doctor::class)]
+    #[Groups(["getCenters"])]
     private Collection $doctor;
 
     #[ORM\OneToMany(mappedBy: 'center', targetEntity: Reservation::class, orphanRemoval: true)]
     private Collection $reservations;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["getCenters"])]
+    private ?string $address = null;
 
     public function __construct()
     {
@@ -170,6 +175,18 @@ class Center
                 $reservation->setCenter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }
