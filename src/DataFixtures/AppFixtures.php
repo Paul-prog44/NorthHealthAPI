@@ -65,13 +65,22 @@ class AppFixtures extends Fixture
         $medicalSpecialties = [ "allergologie ", "pathologique ", "gériatrie", "biologie",
         "cardiologie", "chirurgie", "dentaire", "dermatologie", "podologie", "ophtalmologie", "gynécologie"];
 
-        
-
 
         $medicaleFilesArray = [];
         $doctorsArray = [];
         $centersArray = [];
         $hospitalisationsArray = [];
+        $medicalSpecialtiesArray = [];
+
+        //Création des spécialités
+        foreach  ($medicalSpecialties as $medicalSpecialty ) {
+            $specialty = new Specialty();
+            $specialty->setName($medicalSpecialty);
+            $manager->persist($specialty);
+
+            $medicalSpecialtiesArray[] = $specialty;
+        }
+    
 
         for ($i=0; $i<5; $i++)
         {
@@ -113,33 +122,14 @@ class AppFixtures extends Fixture
 
         for ($i=0; $i<10; $i++)
         {
-
-            //Création des spécialités
-            $specialty = new Specialty();
-            $specialty->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
-            $manager->persist($specialty);
-
-            $specialty2 = new Specialty();
-            $specialty2->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
-            $manager->persist($specialty2);
-
-            $specialty3 = new Specialty();
-            $specialty3->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
-            $manager->persist($specialty3);
-
-            $specialty4 = new Specialty();
-            $specialty4->setName($medicalSpecialties[array_rand($medicalSpecialties)]);
-            $manager->persist($specialty4);
-
             //Création des centres
             $center = new Center();
             $center->setName("Nom du centre ".$i);
             $center->setCity("Ville ".$i);
             $center->setCountry("Pays ".$i);
-            $center->addSpecialty($specialty);
-            $center->addSpecialty($specialty2);
-            $center->addSpecialty($specialty3);
-            $center->addSpecialty($specialty4);
+            foreach ($medicalSpecialtiesArray as $specialty) { //Ajoute toutes les spécialités à chaque centre
+                $center->addSpecialty($specialty);
+            }
             $center->setAddress("Adresse du centre n° ".$i);
             $manager->persist($center);
 
