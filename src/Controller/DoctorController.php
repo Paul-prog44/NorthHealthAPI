@@ -4,16 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Center;
 use App\Entity\Doctor;
+use App\Entity\Specialty;
 use App\Repository\DoctorRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,19 +51,20 @@ class DoctorController extends AbstractController
     }
 
     //Créer un docteur
-    #[Route('/api/doctors', name: 'createDoctor', methods: ['POST'])]
+    #[Route('/api/doctors/{centerId}/{specialtyId}', name: 'createDoctor', methods: ['POST'])]
     public function createDoctor(Request $request, SerializerInterface $serializer,
-    EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
+    EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, $centerId = null, $specialtyId = null): JsonResponse
     {
-
         $doctor = $serializer->deserialize($request->getContent(), Doctor::class, 'json');
-        // $center = $em->getRepository(Center::class)->find(141); //TODO : Associer un centre lors de l'ajout d'un doctor, occasione une ref ciculaire
-        // $doctor->setCenter($center);
+        $center = $centerId ? $em->getRepository(Center::class)->find($centerId) : null;
+        $specialty = $em->getRepository(Specialty::class)->find($specialtyId);
+        $doctor->setCenter($center);
+        $doctor->addSpecialty($specialty);
         
         $em->persist($doctor);
         $em->flush();
 
-        $jsonDoctor = $serializer->serialize($doctor, 'json');
+        $jsonDoctor = $serializer->serialize($doctor, 'json', ['groups' => "getDoctors"]);
 
         $location = $urlGenerator->generate('detailDoctor', ['id' => $doctor->getId()],
         UrlGeneratorInterface::ABSOLUTE_URL);
