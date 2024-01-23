@@ -40,6 +40,9 @@ class Doctor
     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Reservation::class, orphanRemoval: true)]
     private Collection $reservations;
 
+    #[ORM\Column(length: 255)]
+    private ?string $emailAddress = null;
+
 
     public function __construct()
     {
@@ -153,6 +156,18 @@ class Doctor
                 $reservation->setDoctor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmailAddress(): ?string
+    {
+        return $this->emailAddress;
+    }
+
+    public function setEmailAddress(string $emailAddress): static
+    {
+        $this->emailAddress = $emailAddress;
 
         return $this;
     }
