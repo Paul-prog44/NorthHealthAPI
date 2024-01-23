@@ -51,13 +51,14 @@ class DoctorController extends AbstractController
     }
 
     //Créer un docteur
-    #[Route('/api/doctors/{centerId}/{specialtyId}', name: 'createDoctor', methods: ['POST'])]
+    #[Route('/api/doctors', name: 'createDoctor', methods: ['POST'])]
     public function createDoctor(Request $request, SerializerInterface $serializer,
-    EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, $centerId = null, $specialtyId = null): JsonResponse
+    EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
+        $requestArray = $request->toArray(); //transforme le JSON de la requête en tableau associatif
         $doctor = $serializer->deserialize($request->getContent(), Doctor::class, 'json');
-        $center = $centerId ? $em->getRepository(Center::class)->find($centerId) : null;
-        $specialty = $em->getRepository(Specialty::class)->find($specialtyId);
+        $center = $em->getRepository(Center::class)->find($requestArray["centerId"]);
+        $specialty = $em->getRepository(Specialty::class)->find($requestArray["specialtyId"]);
         $doctor->setCenter($center);
         $doctor->addSpecialty($specialty);
         
