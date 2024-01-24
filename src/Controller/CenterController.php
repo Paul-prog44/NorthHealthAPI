@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Center;
+use App\Entity\Specialty;
 use App\Repository\CenterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,11 +56,22 @@ class CenterController extends AbstractController
     public function createCenter(Request $request, SerializerInterface $serializer,
     EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
+        $requestArray = $request->toArray(); //transforme le JSON de la requête en tableau associatif
+        $specialtiesArray =  $requestArray['specialtiesArray'];
         $center = $serializer->deserialize($request->getContent(), Center::class, 'json');
+
+
+        foreach ($specialtiesArray as $specialty)
+        {
+        $specialtyObject = $em->getRepository(Specialty::class)->find($specialty);
+        $center->addSpecialty($specialtyObject);
+        }
+
+
         $em->persist($center);
         $em->flush();
 
-        $jsonCenter = $serializer->serialize($center, 'json');
+        $jsonCenter = $serializer->serialize($center, 'json',  ['groups' => "getCenters"]); //définition du contexte pour éviter les réf circ !!!
 
         $location = $urlGenerator->generate('detailCenter', ['id' => $center->getId()],
         UrlGeneratorInterface::ABSOLUTE_URL);
