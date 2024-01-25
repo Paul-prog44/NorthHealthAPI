@@ -33,7 +33,7 @@ class Center
     #[Groups(["getCenters"])]
     private Collection $specialties;
 
-    #[ORM\OneToMany(mappedBy: 'center', targetEntity: Doctor::class)]
+    #[ORM\OneToMany(mappedBy: 'center', targetEntity: Doctor::class, orphanRemoval: true)] //orphanRemoval permet le suppression des entité enfant en cas de suppression de l'entité parente
     #[Groups(["getCenters"])]
     private Collection $doctor;
 

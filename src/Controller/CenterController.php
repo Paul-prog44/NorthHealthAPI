@@ -47,7 +47,6 @@ class CenterController extends AbstractController
     {
         $em->remove($center);
         $em->flush();
-
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
