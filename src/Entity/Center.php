@@ -45,6 +45,7 @@ class Center
     private ?string $address = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["getCenters"])]
     private ?string $imageFileName = null;
 
     public function __construct()
