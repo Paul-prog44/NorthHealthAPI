@@ -41,6 +41,7 @@ class Doctor
     private Collection $reservations;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getDoctors"])]
     private ?string $emailAddress = null;
 
 
