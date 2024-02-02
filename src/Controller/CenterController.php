@@ -84,8 +84,16 @@ class CenterController extends AbstractController
     public function updateCenter(Request $request, SerializerInterface $serializer, 
     Center $currentCenter, EntityManagerInterface $em): JsonResponse 
     {
+        $requestArray = $request->toArray(); //transforme le JSON de la requête en tableau associatif
+        $specialtiesArray =  $requestArray['specialtiesArray'];
         $updateCenter = $serializer->deserialize($request->getContent(),
                 Center::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $currentCenter]);
+
+        foreach ($specialtiesArray as $specialty)
+        {
+        $specialtyObject = $em->getRepository(Specialty::class)->find($specialty);
+        $updateCenter->addSpecialty($specialtyObject);
+                }
 
         $em->persist($updateCenter);
         $em->flush();
