@@ -5,14 +5,19 @@ namespace App\Controller;
 use App\Entity\Center;
 use App\Entity\Specialty;
 use App\Repository\CenterRepository;
+use App\Repository\SpecialtyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CenterController extends AbstractController
@@ -84,16 +89,36 @@ class CenterController extends AbstractController
     public function updateCenter(Request $request, SerializerInterface $serializer, 
     Center $currentCenter, EntityManagerInterface $em): JsonResponse 
     {
+        $jsonCurrentCenter = $serializer->serialize($currentCenter, 'json', ['groups' => 'getCenters']);
+        $currentCenterArray = json_decode($jsonCurrentCenter, true);
+
+        //Mise dans un tableau des id des spécialités avant MAJ
+        $currentSpecialties = [];
+        foreach ($currentCenterArray['specialties'] as $currentSpecialty)
+        {
+            $currentSpecialties[] = $currentSpecialty['id'];
+        }
+
+
         $requestArray = $request->toArray(); //transforme le JSON de la requête en tableau associatif
         $specialtiesArray =  $requestArray['specialtiesArray'];
         $updateCenter = $serializer->deserialize($request->getContent(),
                 Center::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $currentCenter]);
 
-        foreach ($specialtiesArray as $specialty)
+        //Actualise les spécialités
+        foreach ($currentSpecialties as $specialty)
         {
-        $specialtyObject = $em->getRepository(Specialty::class)->find($specialty);
-        $updateCenter->addSpecialty($specialtyObject);
-                }
+            if (!in_array($specialty, $specialtiesArray))
+            {
+                $specialtyObject = $em->getRepository(Specialty::class)->find($specialty);
+                $updateCenter->removeSpecialty($specialtyObject);
+            }
+        }
+        foreach ($specialtiesArray as $specialty)
+            {
+                $specialtyObject = $em->getRepository(Specialty::class)->find($specialty);
+                $updateCenter->addSpecialty($specialtyObject);
+            }
 
         $em->persist($updateCenter);
         $em->flush();
