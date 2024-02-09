@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Center;
 use App\Entity\Specialty;
 use App\Repository\SpecialtyRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,11 +54,18 @@ class SpecialtyController extends AbstractController
     public function createSpecialty(Request $request, SerializerInterface $serializer,
     EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
+        $requestArray = $request->toArray();
+        $centerId = $requestArray['centerId'];
+
         $specialty = $serializer->deserialize($request->getContent(), Specialty::class, 'json');
+        //Associe un centre à une spécialité
+        $centerObject = $em->getRepository(Center::class)->find($centerId);
+        $specialty->addCenter($centerObject);
+
         $em->persist($specialty);
         $em->flush();
 
-        $jsonSpecialty = $serializer->serialize($specialty, 'json');
+        $jsonSpecialty = $serializer->serialize($specialty, 'json', ['groups' => "getSpecialties"]);
 
         $location = $urlGenerator->generate('detailSpecialty', ['id' => $specialty->getId()],
         UrlGeneratorInterface::ABSOLUTE_URL);
