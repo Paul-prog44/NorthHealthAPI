@@ -26,7 +26,7 @@ class Doctor
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["getDoctors", "getSpecialties"])]
+    #[Groups(["getDoctors", "getSpecialties", "getReservations"])]
     private ?string $lastName = null;
 
     #[ORM\ManyToMany(targetEntity: Specialty::class, mappedBy: 'doctor')]
