@@ -18,7 +18,7 @@ class Center
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["getCenters", "getDoctors", "getReservations"])]
+    #[Groups(["getCenters", "getDoctors", "getReservations", "getMedicalFiles"])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]

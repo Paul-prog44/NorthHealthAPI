@@ -14,7 +14,7 @@ class MedicalFile
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["getMedicalFiles"])]
+    #[Groups(["getMedicalFiles", "getPatients"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
