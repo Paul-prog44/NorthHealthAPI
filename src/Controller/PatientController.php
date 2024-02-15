@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\MedicalFile;
 use App\Entity\Patient;
 use App\Repository\PatientRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,10 +55,13 @@ class PatientController extends AbstractController
     EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
         $patient = $serializer->deserialize($request->getContent(), Patient::class, 'json');
+        $medicalFile = new MedicalFile;
+        $patient->setMedicalFile($medicalFile);
+        $em->persist($medicalFile);
         $em->persist($patient);
         $em->flush();
 
-        $jsonPatient = $serializer->serialize($patient, 'json');
+        $jsonPatient = $serializer->serialize($patient, 'json', ['groups' => 'getPatients']);
 
         $location = $urlGenerator->generate('detailPatient', ['id' => $patient->getId()],
         UrlGeneratorInterface::ABSOLUTE_URL);
