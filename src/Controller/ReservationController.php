@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Center;
+use App\Entity\Doctor;
+use App\Entity\MedicalFile;
 use App\Entity\Reservation;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReservationRepository;
@@ -49,15 +52,25 @@ class ReservationController extends AbstractController
     }
 
     //Créer une réservation
-    #[Route('/api/reservations', name: 'createReservation', methods: ['POST'])]
-    public function createReservation(Request $request, SerializerInterface $serializer,
+    #[Route('/api/reservations/{centerId}', name: 'createReservation', methods: ['POST'])]
+    public function createReservation($centerId = null, Request $request, SerializerInterface $serializer,
     EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
+        $requestArray = $request->toArray(); //Json en tableau associatif
         $reservation = $serializer->deserialize($request->getContent(), Reservation::class, 'json');
+        // On cherche les entités correspondantes
+        $medicalFile = $em->getRepository(MedicalFile::class)->find($requestArray["medicalFile"]); //id
+        $doctor = $em->getRepository(Doctor::class)->find($requestArray["doctor"]); //id
+        $center = $em->getRepository(Center::class)->find($centerId); //id
+ 
+        // Pour le lier à la résa
+        $reservation->setMedicalFile($medicalFile);
+        $reservation->setDoctor($doctor);
+        $reservation->setCenter($center);
         $em->persist($reservation);
         $em->flush();
 
-        $jsonReservation = $serializer->serialize($reservation, 'json');
+        $jsonReservation = $serializer->serialize($reservation, 'json', ['groups' => "getReservations"]);
 
         $location = $urlGenerator->generate('detailReservation', ['id' => $reservation->getId()],
         UrlGeneratorInterface::ABSOLUTE_URL);
