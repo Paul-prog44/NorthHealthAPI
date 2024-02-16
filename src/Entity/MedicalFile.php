@@ -24,6 +24,7 @@ class MedicalFile
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $documents = null;
 
+    #[Groups(["getReservations"])]
     #[ORM\OneToOne(mappedBy: 'medicalFile', cascade: ['persist', 'remove'])]
     private ?Patient $patient = null;
 

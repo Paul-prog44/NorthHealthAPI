@@ -13,6 +13,7 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getReservations"])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]

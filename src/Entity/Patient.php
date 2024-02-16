@@ -20,11 +20,11 @@ class Patient
     private ?string $gender = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["getPatients"])]
+    #[Groups(["getPatients", "getReservations"])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["getPatients"])]
+    #[Groups(["getPatients", "getReservations"])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
