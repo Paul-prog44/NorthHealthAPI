@@ -47,6 +47,9 @@ class Patient
     #[Groups(["getPatients"])]
     private ?MedicalFile $medicalFile = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $acceptCgu = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,6 +147,18 @@ class Patient
     public function setMedicalFile(?MedicalFile $medicalFile): static
     {
         $this->medicalFile = $medicalFile;
+
+        return $this;
+    }
+
+    public function isAcceptCgu(): ?bool
+    {
+        return $this->acceptCgu;
+    }
+
+    public function setAcceptCgu(?bool $acceptCgu): static
+    {
+        $this->acceptCgu = $acceptCgu;
 
         return $this;
     }
