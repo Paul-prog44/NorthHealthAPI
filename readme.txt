@@ -1,3 +1,6 @@
+!!! Les documents associés au projet sont disponibles dans le pdf NorthHealth du dossier Ressource, le téléchargement peut-être long a démarrer en raison de la taille du fichier. !!!
+
+
 Ceci est le repository de mon projet Health North.
 
 Health North est une entreprise médicale qui requiert une application Web et une application mobile qui communiqueront toutes les deux avec une API afin d'interagir avec une BDD.
