@@ -50,6 +50,9 @@ class Patient
     #[ORM\Column(nullable: true)]
     private ?bool $acceptCgu = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $city = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -159,6 +162,18 @@ class Patient
     public function setAcceptCgu(?bool $acceptCgu): static
     {
         $this->acceptCgu = $acceptCgu;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }
