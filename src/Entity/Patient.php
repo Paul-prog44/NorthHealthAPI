@@ -51,6 +51,7 @@ class Patient
     private ?bool $acceptCgu = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(["getPatients"])]
     private ?string $city = null;
 
     public function getId(): ?int
