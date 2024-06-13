@@ -126,7 +126,8 @@ class Patient
 
     public function setPassword(string $password): static
     {
-        $this->password = $password;
+        $newhashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = $newhashedPassword;
 
         return $this;
     }
