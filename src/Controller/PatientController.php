@@ -55,18 +55,26 @@ class PatientController extends AbstractController
     EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
         $patient = $serializer->deserialize($request->getContent(), Patient::class, 'json');
-        $medicalFile = new MedicalFile;
-        $patient->setMedicalFile($medicalFile);
-        $em->persist($medicalFile);
-        $em->persist($patient);
-        $em->flush();
 
-        $jsonPatient = $serializer->serialize($patient, 'json', ['groups' => 'getPatients']);
+        //Vérification de l'existence d'une même adresse email dans la bdd
+        $patientsWithSameEmail = $em->getRepository(Patient::class)->findBy(['emailAddress' => $patient->getEmailAddress() ]);
+        if (count($patientsWithSameEmail) != 0) {
+            return new JsonResponse(null, Response::HTTP_CONFLICT);
+        } else {
+            $medicalFile = new MedicalFile;
+            $patient->setMedicalFile($medicalFile);
+            $em->persist($medicalFile);
+            $em->persist($patient);
+            $em->flush();
 
-        $location = $urlGenerator->generate('detailPatient', ['id' => $patient->getId()],
-        UrlGeneratorInterface::ABSOLUTE_URL);
+            $jsonPatient = $serializer->serialize($patient, 'json', ['groups' => 'getPatients']);
 
-        return new JsonResponse($jsonPatient, Response::HTTP_CREATED, ['Location' => $location], true);
+            $location = $urlGenerator->generate('detailPatient', ['id' => $patient->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL);
+
+            return new JsonResponse($jsonPatient, Response::HTTP_CREATED, ['Location' => $location], true);
+        }
+        
     }
 
     //Mise à jour 
