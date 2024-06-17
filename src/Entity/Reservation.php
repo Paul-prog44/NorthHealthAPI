@@ -39,6 +39,10 @@ class Reservation
     #[Groups(["getMedicalFiles", "getPatients", "getReservations"])]
     private ?Center $center = null;
 
+    #[ORM\Column(length: 512, nullable: true)]
+    #[Groups(["getMedicalFiles", "getPatients", "getReservations"])]
+    private ?string $comments = null;
+
 
     public function getId(): ?int
     {
@@ -101,6 +105,18 @@ class Reservation
     public function setCenter(?Center $center): static
     {
         $this->center = $center;
+
+        return $this;
+    }
+
+    public function getComments(): ?string
+    {
+        return $this->comments;
+    }
+
+    public function setComments(?string $comments): static
+    {
+        $this->comments = $comments;
 
         return $this;
     }
