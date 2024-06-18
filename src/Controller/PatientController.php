@@ -56,8 +56,9 @@ class PatientController extends AbstractController
     {
         $patient = $serializer->deserialize($request->getContent(), Patient::class, 'json');
 
+        $newUserEmailAddress = $patient->getEmailAddress();
         //Vérification de l'existence d'une même adresse email dans la bdd
-        $patientsWithSameEmail = $em->getRepository(Patient::class)->findBy(['emailAddress' => $patient->getEmailAddress() ]);
+        $patientsWithSameEmail = $em->getRepository(Patient::class)->findBy(['emailAddress' => $newUserEmailAddress ]);
         if (count($patientsWithSameEmail) != 0) {
             return new JsonResponse(null, Response::HTTP_CONFLICT);
         } else {
@@ -66,6 +67,15 @@ class PatientController extends AbstractController
             $em->persist($medicalFile);
             $em->persist($patient);
             $em->flush();
+
+            $to = $newUserEmailAddress;
+                $subject = 'Bienvenue chez HEALTH NORTH';
+                $message = 'Bienvenue chez Health North !';
+                $headers = 'From: webmaster@example.com' . "\r\n" .
+                'Reply-To: webmaster@example.com' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+
+            mail($to, $subject, $message, $headers);
 
             $jsonPatient = $serializer->serialize($patient, 'json', ['groups' => 'getPatients']);
 
