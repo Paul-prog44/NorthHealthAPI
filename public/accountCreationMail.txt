@@ -1,0 +1,11 @@
+Cher [gender] [lastName],
+
+Nous sommes ravis de vous compter parmi nos nouveaux membres. Votre compte a été créé avec succès.
+
+Health North est un grand groupe de centres de santé situé en Europe du Nord, reconnu pour ses soins de haute qualité et son expertise médicale. 
+Avec des installations modernes et une équipe de professionnels dévoués, Health North offre une gamme complète de services médicaux et de bien-être. 
+L'entreprise se distingue par son engagement envers l'innovation en santé et le bien-être de ses patients. 
+Health North s'efforce de rendre les soins de santé accessibles et efficaces pour tous ses clients. 
+Forte de nombreuses années d'expérience, la société continue de croître et d'améliorer la qualité de vie dans la région.
+                
+Merci de votre confiance et à bientôt sur Health North !

@@ -57,6 +57,8 @@ class PatientController extends AbstractController
         $patient = $serializer->deserialize($request->getContent(), Patient::class, 'json');
 
         $newUserEmailAddress = $patient->getEmailAddress();
+        $newUserGender = $patient->getGender();
+        $newUserLastname = $patient->getLastName();
         //Vérification de l'existence d'une même adresse email dans la bdd
         $patientsWithSameEmail = $em->getRepository(Patient::class)->findBy(['emailAddress' => $newUserEmailAddress ]);
         if (count($patientsWithSameEmail) != 0) {
@@ -70,11 +72,14 @@ class PatientController extends AbstractController
 
             $to = $newUserEmailAddress;
                 $subject = 'Bienvenue chez HEALTH NORTH';
-                $message = 'Bienvenue chez Health North !';
                 $headers = 'From: webmaster@example.com' . "\r\n" .
                 'Reply-To: webmaster@example.com' . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
+            $file_path  = realpath('C:\Users\Gérald\Documents\BTS SIO\Projet\Projet1\API\health_north_api\public\accountCreationMail.txt');
+            $message = file_get_contents($file_path);
 
+            $message = str_replace('[lastName]', $newUserLastname, $message);
+            $message = str_replace('[gender]', $newUserGender, $message );
             mail($to, $subject, $message, $headers);
 
             $jsonPatient = $serializer->serialize($patient, 'json', ['groups' => 'getPatients']);
