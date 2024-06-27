@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PatientRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -53,6 +54,9 @@ class Patient
     #[ORM\Column(length: 50, nullable: true)]
     #[Groups(["getPatients"])]
     private ?string $city = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastLogin = null;
 
     public function getId(): ?int
     {
@@ -176,6 +180,18 @@ class Patient
     public function setCity(?string $city): static
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): static
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
